@@ -1,0 +1,1829 @@
+---
+title: "Meta-analyses"
+author: "Olivia Malkowski"
+date: "1/31/2024"
+output: html_document
+---
+
+# PHYSICAL CAPABILITY
+## Physical function - low SES
+```{r physical function low}
+knitr::opts_chunk$set(echo = TRUE)
+library(readxl)
+library(metafor)
+library(meta)
+
+LowPF <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Physical function (low)")
+# Only binary
+binary_LowPF <- LowPF[-c(2,3,4,7,8,9), ]
+resRR_LowPF <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowPF, measure = "RR")
+resRR_LowPF
+
+resOR_LowPF <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowPF, measure = "OR")
+resOR_LowPF
+
+LowPF2 <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Physical function (low 2)")
+
+# Only continuous - 1x change
+cont_LowPF <- LowPF2[-c(2,4,5,6,8,9,10), ]
+resSMD_LowPF <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_LowPF, measure = "SMD")
+resSMD_LowPF
+
+# Combined - 1x change - SMD
+clean_LowPF <- LowPF2[-c(2,4,8,9), ]
+clean_comb_LowPF <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_LowPF)
+clean_comb_LowPF <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowPF, replace=FALSE)
+rescSMD_LowPF <- rma(yi = yi, vi = vi, data = clean_comb_LowPF)
+rescSMD_LowPF
+# Combined - 1x change - OR
+clean_LowPFor <- LowPF2[-c(2,4,8,9), ]
+clean_comb_LowPFor <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_LowPFor)
+clean_comb_LowPFor <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowPFor, replace=FALSE)
+rescOR_LowPF <- rma(yi = yi, vi = vi, data = clean_comb_LowPFor)
+rescOR_LowPF
+# Combined - without change - SMD
+clean_LowPFb <- LowPF2[-c(2,4,7,8,9), ]
+clean_comb_LowPFb <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_LowPFb)
+clean_comb_LowPFb <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowPFb, replace=FALSE)
+rescSMD_LowPFb <- rma(yi = yi, vi = vi, data = clean_comb_LowPFb)
+rescSMD_LowPFb
+# Combined - without change - OR
+clean_LowPForb <- LowPF2[-c(2,4,7,8,9), ]
+clean_comb_LowPForb <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_LowPForb)
+clean_comb_LowPForb <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowPForb, replace=FALSE)
+rescOR_LowPFb <- rma(yi = yi, vi = vi, data = clean_comb_LowPForb)
+rescOR_LowPFb
+```
+
+## Physical function - high SES
+```{r physical function high}
+HighPF <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Physical function (high)")
+# Only binary
+binary_HighPF <- HighPF[-c(1,2,4,6,7,8,9,10,12,13,14), ]
+resRR_HighPF <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighPF, measure = "RR")
+resRR_HighPF
+
+resOR_HighPF <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighPF, measure = "OR")
+resOR_HighPF
+
+HighPF2 <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Physical function (high 2)")
+
+# Only continuous - 1x change
+cont_HighPF <- HighPF2[-c(1,2,3,4,6,8,9,10,11,13,14,15), ]
+resSMD_HighPF <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_HighPF, measure = "SMD")
+resSMD_HighPF
+
+# Combined - 1x change - SMD
+clean_HighPF <- HighPF2[-c(1,2,4,6,8,9,10,13,14), ]
+clean_comb_HighPF <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_HighPF)
+clean_comb_HighPF <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighPF, replace=FALSE)
+rescSMD_HighPF <- rma(yi = yi, vi = vi, data = clean_comb_HighPF)
+rescSMD_HighPF
+# Combined - 1x change - OR
+clean_HighPFor <- HighPF2[-c(1,2,4,6,8,9,10,13,14), ]
+clean_comb_HighPFor <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_HighPFor)
+clean_comb_HighPFor <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighPFor, replace=FALSE)
+rescOR_HighPF <- rma(yi = yi, vi = vi, data = clean_comb_HighPFor)
+rescOR_HighPF
+# Combined - without change - SMD
+clean_HighPFb <- HighPF2[-c(1,2,4,6,8,9,10,12,13,14), ]
+clean_comb_HighPFb <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_HighPFb)
+clean_comb_HighPFb <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighPFb, replace=FALSE)
+rescSMD_HighPFb <- rma(yi = yi, vi = vi, data = clean_comb_HighPFb)
+rescSMD_HighPFb
+# Combined - without change - OR
+clean_HighPForb <- HighPF2[-c(1,2,4,6,8,9,10,12,13,14), ]
+clean_comb_HighPForb <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_HighPForb)
+clean_comb_HighPForb <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighPForb, replace=FALSE)
+rescOR_HighPFb <- rma(yi = yi, vi = vi, data = clean_comb_HighPForb)
+rescOR_HighPFb
+```
+
+# PSYCHOLOGICAL CAPABILITY
+## Memory - low SES
+```{r memory low}
+LowMM <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Memory (low)")
+# Only binary
+clean_LowMM <- LowMM[-c(1,3,4,5,6,8), ]
+resRR_LowMM <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = clean_LowMM, measure = "RR")
+resRR_LowMM
+
+resOR_LowMM <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = clean_LowMM, measure = "OR")
+resOR_LowMM
+
+# Combined - SMD
+comb_LowMM <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_LowMM, replace=FALSE)
+rescSMD_LowMM <- rma(yi = yi, vi = vi, data = comb_LowMM)
+rescSMD_LowMM
+```
+
+## Memory - high SES
+```{r memory high}
+HighMM <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Memory (high)")
+# Only binary
+clean_HighMM <- HighMM[-c(1,3,4,5,6,8), ]
+resRR_HighMM <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = clean_HighMM, measure = "RR")
+resRR_HighMM
+
+resOR_HighMM <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = clean_HighMM, measure = "OR")
+resOR_HighMM
+
+# Combined - SMD
+comb_HighMM <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_HighMM, replace=FALSE)
+rescSMD_HighMM <- rma(yi = yi, vi = vi, data = comb_HighMM)
+rescSMD_HighMM
+```
+
+## Health literacy - low SES
+```{r health literacy low}
+LowHL <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Health literacy (low)")
+# Only binary
+resRR_LowHL <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = LowHL, measure = "RR")
+resRR_LowHL
+
+resOR_LowHL <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = LowHL, measure = "OR")
+resOR_LowHL
+
+# Combined - SMD
+comb_LowHL <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=LowHL, replace=FALSE)
+rescSMD_LowHL <- rma(yi = yi, vi = vi, data = comb_LowHL)
+rescSMD_LowHL
+```
+
+## Health literacy - high SES
+```{r health literacy high}
+HighHL <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Health literacy (high)")
+# Only binary
+resRR_HighHL <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = HighHL, measure = "RR")
+resRR_HighHL
+
+resOR_HighHL <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = HighHL, measure = "OR")
+resOR_HighHL
+
+# Combined - SMD
+comb_HighHL <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=HighHL, replace=FALSE)
+rescSMD_HighHL <- rma(yi = yi, vi = vi, data = comb_HighHL)
+rescSMD_HighHL
+```
+
+# PHYSICAL OPPORTUNITY
+## Amount of green space - low SES
+```{r amount of green space low}
+LowGS <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Amount of green space (low)")
+
+# Only binary
+resRR_LowGS <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = LowGS, measure = "RR")
+resRR_LowGS
+
+resOR_LowGS <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = LowGS, measure = "OR")
+resOR_LowGS
+
+LowGS2 <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Amount of green space (low 2)")
+
+# Combined - SMD
+clean_comb_LowGS <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=LowGS2)
+clean_comb_LowGS <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowGS, replace=FALSE)
+rescSMD_LowGS <- rma(yi = yi, vi = vi, data = clean_comb_LowGS)
+rescSMD_LowGS
+# Combined - OR
+clean_comb_LowGSor <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=LowGS2)
+clean_comb_LowGSor <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowGSor, replace=FALSE)
+rescOR_LowGS <- rma(yi = yi, vi = vi, data = clean_comb_LowGSor)
+rescOR_LowGS
+```
+
+## Amount of green space - high SES
+```{r amount of green space high}
+HighGS <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Amount of green space (high)")
+
+# Only binary
+resRR_HighGS <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = HighGS, measure = "RR")
+resRR_HighGS
+
+resOR_HighGS <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = HighGS, measure = "OR")
+resOR_HighGS
+
+HighGS2 <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Amount of green space (high 2)")
+
+# Combined - SMD
+clean_comb_HighGS <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=HighGS2)
+clean_comb_HighGS <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighGS, replace=FALSE)
+rescSMD_HighGS <- rma(yi = yi, vi = vi, data = clean_comb_HighGS)
+rescSMD_HighGS
+# Combined - OR
+clean_comb_HighGSor <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=HighGS2)
+clean_comb_HighGSor <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighGSor, replace=FALSE)
+rescOR_HighGS <- rma(yi = yi, vi = vi, data = clean_comb_HighGSor)
+rescOR_HighGS
+```
+
+## Built physical activity facilities - low SES
+```{r built pa facilities low}
+LowBF <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Built PA facilities (low)")
+
+# Combined - SMD
+comb_LowBF <- LowBF[-c(3,6), ]
+clean_comb_LowBF <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowBF)
+clean_comb_LowBF <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowBF, replace=FALSE)
+rescSMD_LowBF <- rma(yi = yi, vi = vi, data = clean_comb_LowBF)
+rescSMD_LowBF
+# Combined - OR
+comb_LowBFor <- LowBF[-c(3,6), ]
+clean_comb_LowBFor <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowBFor)
+clean_comb_LowBFor <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowBFor, replace=FALSE)
+rescOR_LowBF <- rma(yi = yi, vi = vi, data = clean_comb_LowBFor)
+rescOR_LowBF
+```
+
+## Built physical activity facilities - high SES
+```{r built pa facilities high}
+HighBF <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Built PA facilities (high)")
+
+# Combined - SMD
+comb_HighBF <- HighBF[-c(3,6), ]
+clean_comb_HighBF <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighBF)
+clean_comb_HighBF <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighBF, replace=FALSE)
+rescSMD_HighBF <- rma(yi = yi, vi = vi, data = clean_comb_HighBF)
+rescSMD_HighBF
+# Combined - OR
+comb_HighBFor <- HighBF[-c(3,6), ]
+clean_comb_HighBFor <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighBFor)
+clean_comb_HighBFor <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighBFor, replace=FALSE)
+rescOR_HighBF <- rma(yi = yi, vi = vi, data = clean_comb_HighBFor)
+rescOR_HighBF
+```
+
+## Natural physical activity facilities - low SES
+```{r natural pa facilities low}
+LowNF <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Natural PA facilities (low)")
+
+# Combined - SMD
+clean_comb_LowNF <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=LowNF)
+clean_comb_LowNF <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowNF, replace=FALSE)
+rescSMD_LowNF <- rma(yi = yi, vi = vi, data = clean_comb_LowNF)
+rescSMD_LowNF
+# Combined - OR
+clean_comb_LowNFor <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=LowNF)
+clean_comb_LowNFor <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowNFor, replace=FALSE)
+rescOR_LowNF <- rma(yi = yi, vi = vi, data = clean_comb_LowNFor)
+rescOR_LowNF
+```
+
+## Natural physical activity facilities - high SES
+```{r natural pa facilities high}
+HighNF <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Natural PA facilities (high)")
+
+# Combined - SMD
+clean_comb_HighNF <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=HighNF)
+clean_comb_HighNF <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighNF, replace=FALSE)
+rescSMD_HighNF <- rma(yi = yi, vi = vi, data = clean_comb_HighNF)
+rescSMD_HighNF
+# Combined - OR
+clean_comb_HighNFor <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=HighNF)
+clean_comb_HighNFor <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighNFor, replace=FALSE)
+rescOR_HighNF <- rma(yi = yi, vi = vi, data = clean_comb_HighNFor)
+rescOR_HighNF
+```
+
+## Walking and cycling infrastructure - low SES
+```{r w & c infrastructure low}
+LowWC <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "W & C infrastructure (low)")
+
+# Only binary
+binary_LowWC <- LowWC[-c(1,2,6,7,8), ]
+resRR_LowWC <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowWC, measure = "RR")
+resRR_LowWC
+
+resOR_LowWC <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowWC, measure = "OR")
+resOR_LowWC
+
+# Only continuous - 1x change
+cont_LowWC <- LowWC[-c(3,4,5,7,8), ]
+resSMD_LowWC <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_LowWC, measure = "SMD")
+resSMD_LowWC
+
+# Combined - 1x change - SMD
+comb_LowWC <- LowWC[-c(7,8), ]
+clean_comb_LowWC <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowWC)
+clean_comb_LowWC <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowWC, replace=FALSE)
+rescSMD_LowWC <- rma(yi = yi, vi = vi, data = clean_comb_LowWC)
+rescSMD_LowWC
+# Combined - 1x change - OR
+comb_LowWCor <- LowWC[-c(7,8), ]
+clean_comb_LowWCor <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowWCor)
+clean_comb_LowWCor <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowWCor, replace=FALSE)
+rescOR_LowWC <- rma(yi = yi, vi = vi, data = clean_comb_LowWCor)
+rescOR_LowWC
+# Combined - without change - SMD
+comb_LowWCb <- LowWC[-c(2,7,8), ]
+clean_comb_LowWCb <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowWCb)
+clean_comb_LowWCb <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowWCb, replace=FALSE)
+rescSMD_LowWCb <- rma(yi = yi, vi = vi, data = clean_comb_LowWCb)
+rescSMD_LowWCb
+# Combined - without change - OR
+comb_LowWCorb <- LowWC[-c(2,7,8), ]
+clean_comb_LowWCorb <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowWCorb)
+clean_comb_LowWCorb <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowWCorb, replace=FALSE)
+rescOR_LowWCb <- rma(yi = yi, vi = vi, data = clean_comb_LowWCorb)
+rescOR_LowWCb
+```
+
+## Walking and cycling infrastructure - high SES
+```{r w & c infrastructure high}
+HighWC <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "W & C infrastructure (high)")
+
+# Only continuous - 1x change
+cont_HighWC <- HighWC[-c(3,4,6,7), ]
+resSMD_HighWC <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_HighWC, measure = "SMD")
+resSMD_HighWC
+
+# Combined - 1x change - SMD
+comb_HighWC <- HighWC[-c(6,7), ]
+clean_comb_HighWC <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighWC)
+clean_comb_HighWC <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighWC, replace=FALSE)
+rescSMD_HighWC <- rma(yi = yi, vi = vi, data = clean_comb_HighWC)
+rescSMD_HighWC
+# Combined - 1x change - OR
+comb_HighWCor <- HighWC[-c(6,7), ]
+clean_comb_HighWCor <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighWCor)
+clean_comb_HighWCor <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighWCor, replace=FALSE)
+rescOR_HighWC <- rma(yi = yi, vi = vi, data = clean_comb_HighWCor)
+rescOR_HighWC
+# Combined - without change - SMD
+comb_HighWCb <- HighWC[-c(2,6,7), ]
+clean_comb_HighWCb <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighWCb)
+clean_comb_HighWCb <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighWCb, replace=FALSE)
+rescSMD_HighWCb <- rma(yi = yi, vi = vi, data = clean_comb_HighWCb)
+rescSMD_HighWCb
+# Combined - without change - OR
+comb_HighWCorb <- HighWC[-c(2,6,7), ]
+clean_comb_HighWCorb <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighWCorb)
+clean_comb_HighWCorb <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighWCorb, replace=FALSE)
+rescOR_HighWCb <- rma(yi = yi, vi = vi, data = clean_comb_HighWCorb)
+rescOR_HighWCb
+```
+
+# SOCIAL OPPORTUNITY
+## Dog ownership - low SES
+```{r dog ownership low}
+LowDog <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Dog ownership (low)")
+
+# Combined - SMD
+comb_LowDog <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=LowDog)
+comb_LowDog <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowDog, replace=FALSE)
+rescSMD_LowDog <- rma(yi = yi, vi = vi, data = comb_LowDog)
+rescSMD_LowDog
+# Combined - OR
+comb_LowDogor <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=LowDog)
+comb_LowDogor <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowDogor, replace=FALSE)
+rescOR_LowDog <- rma(yi = yi, vi = vi, data = comb_LowDogor)
+rescOR_LowDog
+```
+
+## Dog ownership - high SES
+```{r dog ownership high}
+HighDog <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Dog ownership (high)")
+
+# Combined - SMD
+comb_HighDog <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=HighDog)
+comb_HighDog <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighDog, replace=FALSE)
+rescSMD_HighDog <- rma(yi = yi, vi = vi, data = comb_HighDog)
+rescSMD_HighDog
+# Combined - OR
+comb_HighDogor <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=HighDog)
+comb_HighDogor <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighDogor, replace=FALSE)
+rescOR_HighDog <- rma(yi = yi, vi = vi, data = comb_HighDogor)
+rescOR_HighDog
+```
+
+## Social participation - low SES
+```{r social participation low}
+LowSP <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Social participation (low)")
+
+# Only binary
+clean_LowSP <- LowSP[-c(1), ]
+comb_LowSP <- escalc(measure="OR", ai=epos, bi=eneg, ci=npos, di=nneg, data=clean_LowSP)
+comb_LowSP <- conv.wald(out=OR, ci.lb=ci.lb, ci.ub=ci.ub, data=comb_LowSP, transf=log)
+resOR_LowSP <- rma(yi = yi, vi = vi, data = comb_LowSP)
+resOR_LowSP
+
+# Combined - SMD
+comb_LowSP2 <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_LowSP, replace=FALSE)
+comb_LowSP2 <- conv.wald(out=OR, ci.lb=ci.lb, ci.ub=ci.ub, data=comb_LowSP2, transf=log, var.names=c("lnor","vlnor"))
+comb_LowSP2 <- conv.delta(lnor, vlnor, data=comb_LowSP2,
+                  transf=transf.lnortod.norm, var.names=c("yi","vi"))
+rescSMD_LowSP <- rma(yi = yi, vi = vi, data = comb_LowSP2)
+rescSMD_LowSP
+```
+
+## Social participation - high SES
+```{r social participation high}
+HighSP <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Social participation (high)")
+
+# Only binary
+clean_HighSP <- HighSP[-c(1), ]
+resRR_HighSP <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = clean_HighSP, measure = "RR")
+resRR_HighSP
+
+resOR_HighSP <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = clean_HighSP, measure = "OR")
+resOR_HighSP
+
+# Combined - SMD
+comb_HighSP <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_HighSP, replace=FALSE)
+rescSMD_HighSP <- rma(yi = yi, vi = vi, data = comb_HighSP)
+rescSMD_HighSP
+```
+
+## Social support - low SES
+```{r social support low}
+LowSS <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Social support (low)")
+
+# Only binary 
+clean_LowSS <- LowSS[-c(2,3,4,6,7,8,9,11), ]
+resRR_LowSS <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = clean_LowSS, measure = "RR")
+resRR_LowSS
+
+resOR_LowSS <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = clean_LowSS, measure = "OR")
+resOR_LowSS
+
+# Combined - SMD
+comb_LowSS<- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_LowSS, replace=FALSE)
+rescSMD_LowSS <- rma(yi = yi, vi = vi, data = comb_LowSS)
+rescSMD_LowSS
+```
+
+## Social support - high SES
+```{r social support high}
+HighSS <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Social support (high)")
+
+# Only binary
+clean_HighSS <- HighSS[-c(2,3,4,6,7,8,9,11), ]
+resRR_HighSS <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = clean_HighSS, measure = "RR")
+resRR_HighSS
+
+resOR_HighSS <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = clean_HighSS, measure = "OR")
+resOR_HighSS
+
+# Combined - SMD
+comb_HighSS<- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_HighSS, replace=FALSE)
+rescSMD_HighSS <- rma(yi = yi, vi = vi, data = comb_HighSS)
+rescSMD_HighSS
+```
+
+# REFLECTIVE MOTIVATION
+## Motivation - low SES
+```{r motivation low}
+LowMo <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Motivation (low)")
+# Combined - SMD
+comb_LowMo <- LowMo[-c(2,4,5,6,8), ]
+clean_comb_LowMo <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowMo)
+clean_comb_LowMo <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowMo, replace=FALSE)
+rescSMD_LowMo <- rma(yi = yi, vi = vi, data = clean_comb_LowMo)
+rescSMD_LowMo
+# Combined - OR
+comb_LowMoor <- LowMo[-c(2,4,5,6,8), ]
+clean_comb_LowMoor <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowMoor)
+clean_comb_LowMoor <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowMoor, replace=FALSE)
+rescOR_LowMo <- rma(yi = yi, vi = vi, data = clean_comb_LowMoor)
+rescOR_LowMo
+```
+
+# GENERAL HEALTH AND WELLBEING
+## Depressive symptoms - low SES
+```{r depressive symptoms low}
+LowDE <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Depressive symptoms (low)")
+
+# Only binary - 1x change
+binary_LowDE <- LowDE[-c(2,5,6,8,10,12,13,14,15,16), ]
+resRR_LowDE <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowDE, measure = "RR")
+resRR_LowDE
+
+resOR_LowDE <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowDE, measure = "OR")
+resOR_LowDE
+
+# Only binary - without change
+binary_LowDEw <- LowDE[-c(2,5,6,8,10,12,13,14,15,16,17), ]
+resRR_LowDEw <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowDEw, measure = "RR")
+resRR_LowDEw
+
+resOR_LowDEw <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowDEw, measure = "OR")
+resOR_LowDEw
+
+# Only continuous - 1x change
+cont_LowDE <- LowDE[-c(2,3,4,5,7,8,9,11,12,13,14,15,16,17,18), ]
+resSMD_LowDE <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_LowDE, measure = "SMD")
+resSMD_LowDE
+
+LowDE2 <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Depressive symptoms (low 2)")
+
+# Combined - 2x change - SMD
+comb_LowDE2 <- LowDE2[-c(2,5,8,12,13,14,15,16), ]
+clean_comb_LowDE <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowDE2)
+clean_comb_LowDE <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowDE, replace=FALSE)
+rescSMD_LowDE <- rma(yi = yi, vi = vi, data = clean_comb_LowDE)
+rescSMD_LowDE
+funnel(rescSMD_LowDE)
+regtest(rescSMD_LowDE)
+# Combined - 2x change - OR
+comb_LowDEor <- LowDE2[-c(2,5,8,12,13,14,15,16), ]
+clean_comb_LowDEor <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowDEor)
+clean_comb_LowDEor <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowDEor, replace=FALSE)
+rescOR_LowDE <- rma(yi = yi, vi = vi, data = clean_comb_LowDEor)
+rescOR_LowDE
+funnel(rescOR_LowDE)
+regtest(rescOR_LowDE)
+
+# Combined - without change - SMD
+comb_LowDEb <- LowDE2[-c(2,5,8,10,12,13,14,15,16,17), ]
+clean_comb_LowDEb <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowDEb)
+clean_comb_LowDEb <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowDEb, replace=FALSE)
+rescSMD_LowDEb <- rma(yi = yi, vi = vi, data = clean_comb_LowDEb)
+rescSMD_LowDEb
+# Combined - without change - OR
+comb_LowDEorb <- LowDE2[-c(2,5,8,10,12,13,14,15,16,17), ]
+clean_comb_LowDEorb <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowDEorb)
+clean_comb_LowDEorb <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowDEorb, replace=FALSE)
+rescOR_LowDEb <- rma(yi = yi, vi = vi, data = clean_comb_LowDEorb)
+rescOR_LowDEb
+```
+
+## Depressive symptoms - low SES (sub-group analyses)
+```{r depressive symptoms low sub-group}
+# Combined - 1x change - SMD - Education
+comb_LowDE2edu <- LowDE2[-c(1,2,5,6,8,9,10,11,12,13,14,15,16), ]
+clean_comb_LowDEedu <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowDE2edu)
+clean_comb_LowDEedu <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowDEedu, replace=FALSE)
+rescSMD_LowDEedu <- rma(yi = yi, vi = vi, data = clean_comb_LowDEedu)
+rescSMD_LowDEedu
+# Combined - 1x change - OR - Education
+comb_LowDEoredu <- LowDE2[-c(1,2,5,6,8,9,10,11,12,13,14,15,16), ]
+clean_comb_LowDEoredu <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowDEoredu)
+clean_comb_LowDEoredu <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowDEoredu, replace=FALSE)
+rescOR_LowDEedu <- rma(yi = yi, vi = vi, data = clean_comb_LowDEoredu)
+rescOR_LowDEedu
+# Combined - 1x change - SMD - IMD
+comb_LowDE2i <- LowDE2[-c(2,3,4,5,7,8,9,12,13,14,15,16,17,18), ]
+clean_comb_LowDEi <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowDE2i)
+clean_comb_LowDEi <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowDEi, replace=FALSE)
+rescSMD_LowDEi <- rma(yi = yi, vi = vi, data = clean_comb_LowDEi)
+rescSMD_LowDEi
+# Combined - 1x change - OR - IMD
+comb_LowDEori <- LowDE2[-c(2,3,4,5,7,8,9,12,13,14,15,16,17,18), ]
+clean_comb_LowDEori <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowDEori)
+clean_comb_LowDEori <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowDEori, replace=FALSE)
+rescOR_LowDEi <- rma(yi = yi, vi = vi, data = clean_comb_LowDEori)
+rescOR_LowDEi
+
+# Combined - without change - SMD - Education
+comb_LowDEbedu <- LowDE2[-c(1,2,5,6,8,9,10,11,12,13,14,15,16,17), ]
+clean_comb_LowDEbedu <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowDEbedu)
+clean_comb_LowDEbedu <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowDEbedu, replace=FALSE)
+rescSMD_LowDEbedu <- rma(yi = yi, vi = vi, data = clean_comb_LowDEbedu)
+rescSMD_LowDEbedu
+# Combined - without change - OR - Education
+comb_LowDEorbedu <- LowDE2[-c(1,2,5,6,8,9,10,11,12,13,14,15,16,17), ]
+clean_comb_LowDEorbedu <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowDEorbedu)
+clean_comb_LowDEorbedu <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowDEorbedu, replace=FALSE)
+rescOR_LowDEbedu <- rma(yi = yi, vi = vi, data = clean_comb_LowDEorbedu)
+rescOR_LowDEbedu
+# Combined - without change - SMD - IMD
+comb_LowDEbi <- LowDE2[-c(2,3,4,5,7,8,9,10,12,13,14,15,16,17,18), ]
+clean_comb_LowDEbi <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowDEbi)
+clean_comb_LowDEbi <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowDEbi, replace=FALSE)
+rescSMD_LowDEbi <- rma(yi = yi, vi = vi, data = clean_comb_LowDEbi)
+rescSMD_LowDEbi
+# Combined - without change - OR - IMD
+comb_LowDEorbi <- LowDE2[-c(2,3,4,5,7,8,9,10,12,13,14,15,16,17,18), ]
+clean_comb_LowDEorbi <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowDEorbi)
+clean_comb_LowDEorbi <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowDEorbi, replace=FALSE)
+rescOR_LowDEbi <- rma(yi = yi, vi = vi, data = clean_comb_LowDEorbi)
+rescOR_LowDEbi
+```
+
+## Depressive symptoms - high SES
+```{r depressive symptoms high}
+HighDE <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Depressive symptoms (high)")
+
+# Only binary - 1x change
+binary_HighDE <- HighDE[-c(2,5,7,9), ]
+resRR_HighDE <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighDE, measure = "RR")
+resRR_HighDE
+
+resOR_HighDE <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighDE, measure = "OR")
+resOR_HighDE
+
+# Only binary - without change
+binary_HighDEw <- HighDE[-c(2,5,7,9,11), ]
+resRR_HighDEw <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighDEw, measure = "RR")
+resRR_HighDEw
+
+resOR_HighDEw <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighDEw, measure = "OR")
+resOR_HighDEw
+
+HighDE2 <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Depressive symptoms (high 2)")
+
+# Combined - 2x change - SMD
+comb_HighDE <- HighDE2[-c(2,5,7), ]
+clean_comb_HighDE <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighDE)
+clean_comb_HighDE <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighDE, replace=FALSE)
+rescSMD_HighDE <- rma(yi = yi, vi = vi, data = clean_comb_HighDE)
+rescSMD_HighDE
+# Combined - 2x change - OR
+comb_HighDEor <- HighDE2[-c(2,5,7), ]
+clean_comb_HighDEor <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighDEor)
+clean_comb_HighDEor <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighDEor, replace=FALSE)
+rescOR_HighDE <- rma(yi = yi, vi = vi, data = clean_comb_HighDEor)
+rescOR_HighDE
+
+# Combined - without change - SMD
+comb_HighDEb <- HighDE[-c(2,5,7,9,11), ]
+clean_comb_HighDEb <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighDEb)
+clean_comb_HighDEb <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighDEb, replace=FALSE)
+rescSMD_HighDEb <- rma(yi = yi, vi = vi, data = clean_comb_HighDEb)
+rescSMD_HighDEb
+# Combined - without change - OR
+comb_HighDEorb <- HighDE[-c(2,5,7,9,11), ]
+clean_comb_HighDEorb <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighDEorb)
+clean_comb_HighDEorb <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighDEorb, replace=FALSE)
+rescOR_HighDEb <- rma(yi = yi, vi = vi, data = clean_comb_HighDEorb)
+rescOR_HighDEb
+```
+
+## Depressive symptoms - high SES (sub-group analyses)
+```{r depressive symptoms high sub-group}
+# Combined - 1x change - SMD - Education
+comb_HighDE2edu <- HighDE2[-c(1,2,5,7,8,9,10), ]
+clean_comb_HighDEedu <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighDE2edu)
+clean_comb_HighDEedu <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighDEedu, replace=FALSE)
+rescSMD_HighDEedu <- rma(yi = yi, vi = vi, data = clean_comb_HighDEedu)
+rescSMD_HighDEedu
+# Combined - 1x change - OR - Education
+comb_HighDEoredu <- HighDE2[-c(1,2,5,7,8,9,10), ]
+clean_comb_HighDEoredu <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighDEoredu)
+clean_comb_HighDEoredu <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighDEoredu, replace=FALSE)
+rescOR_HighDEedu <- rma(yi = yi, vi = vi, data = clean_comb_HighDEoredu)
+rescOR_HighDEedu
+# Combined - 1x change - SMD - IMD
+comb_HighDE2i <- HighDE2[-c(2,3,4,5,6,7,8,11,12), ]
+clean_comb_HighDEi <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighDE2i)
+clean_comb_HighDEi <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighDEi, replace=FALSE)
+rescSMD_HighDEi <- rma(yi = yi, vi = vi, data = clean_comb_HighDEi)
+rescSMD_HighDEi
+# Combined - 1x change - OR - IMD
+comb_HighDEori <- HighDE2[-c(2,3,4,5,6,7,8,11,12), ]
+clean_comb_HighDEori <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighDEori)
+clean_comb_HighDEori <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighDEori, replace=FALSE)
+rescOR_HighDEi <- rma(yi = yi, vi = vi, data = clean_comb_HighDEori)
+rescOR_HighDEi
+
+# Combined - without change - SMD - Education
+comb_HighDEbedu <- HighDE2[-c(1,2,5,7,8,9,10,11), ]
+clean_comb_HighDEbedu <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighDEbedu)
+clean_comb_HighDEbedu <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighDEbedu, replace=FALSE)
+rescSMD_HighDEbedu <- rma(yi = yi, vi = vi, data = clean_comb_HighDEbedu)
+rescSMD_HighDEbedu
+# Combined - without change - OR - Education
+comb_HighDEorbedu <- HighDE2[-c(1,2,5,7,8,9,10,11), ]
+clean_comb_HighDEorbedu <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighDEorbedu)
+clean_comb_HighDEorbedu <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighDEorbedu, replace=FALSE)
+rescOR_HighDEbedu <- rma(yi = yi, vi = vi, data = clean_comb_HighDEorbedu)
+rescOR_HighDEbedu
+```
+
+## Perception of general health - low SES
+```{r perception of gh low}
+LowGH <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Perception of GH (low)")
+
+# Only binary - 1x change
+binary_LowGH <- LowGH[-c(3,7,8,9,10), ]
+resRR_LowGH <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowGH, measure = "RR")
+resRR_LowGH
+funnel(resRR_LowGH)
+regtest(resRR_LowGH)
+
+resOR_LowGH <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowGH, measure = "OR")
+resOR_LowGH
+funnel(resOR_LowGH)
+regtest(resOR_LowGH)
+
+# Only binary - without change
+binary_LowGHw <- LowGH[-c(3,7,8,9,10,14), ]
+resRR_LowGHw <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowGHw, measure = "RR")
+resRR_LowGHw
+
+resOR_LowGHw <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowGHw, measure = "OR")
+resOR_LowGHw
+
+# Only continuous
+cont_LowGH <- LowGH[-c(1,2,4,5,6,10,11,12,14,15), ]
+resSMD_LowGH <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_LowGH, measure = "SMD")
+resSMD_LowGH
+
+LowGH2 <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Perception of GH (low 2)")
+
+# Combined - 1x change - SMD
+comb_LowGH <- LowGH2[-c(10), ]
+clean_comb_LowGH <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowGH)
+clean_comb_LowGH <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowGH, replace=FALSE)
+rescSMD_LowGH <- rma(yi = yi, vi = vi, data = clean_comb_LowGH)
+rescSMD_LowGH
+funnel(rescSMD_LowGH)
+regtest(rescSMD_LowGH)
+# Combined - 1x change - OR
+comb_LowGHor <- LowGH2[-c(10), ]
+clean_comb_LowGHor <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowGHor)
+clean_comb_LowGHor <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowGHor, replace=FALSE)
+rescOR_LowGH <- rma(yi = yi, vi = vi, data = clean_comb_LowGHor)
+rescOR_LowGH
+funnel(rescOR_LowGH)
+regtest(rescOR_LowGH)
+
+# Combined - without change - SMD
+comb_LowGHb <- LowGH2[-c(10,14), ]
+clean_comb_LowGHb <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowGHb)
+clean_comb_LowGHb <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowGHb, replace=FALSE)
+rescSMD_LowGHb <- rma(yi = yi, vi = vi, data = clean_comb_LowGHb)
+rescSMD_LowGHb
+funnel(rescSMD_LowGHb)
+regtest(rescSMD_LowGHb)
+# Combined - without change - OR
+comb_LowGHorb <- LowGH2[-c(10,14), ]
+clean_comb_LowGHorb <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowGHorb)
+clean_comb_LowGHorb <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowGHorb, replace=FALSE)
+rescOR_LowGHb <- rma(yi = yi, vi = vi, data = clean_comb_LowGHorb)
+rescOR_LowGHb
+funnel(rescOR_LowGHb)
+regtest(rescOR_LowGHb)
+```
+
+## Perception of general health - low SES (sub-group analyses)
+```{r perception of gh low sub-group}
+# Only binary - 1x change - Education
+binary_LowGHedu <- LowGH[-c(1,2,3,4,7,8,9,10,11,12,13), ]
+resRR_LowGHedu <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowGHedu, measure = "RR")
+resRR_LowGHedu
+
+resOR_LowGHedu <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowGHedu, measure = "OR")
+resOR_LowGHedu
+# Only binary - Income
+binary_LowGHi <- LowGH[-c(3,5,6,7,8,9,10,12,14,15), ]
+resRR_LowGHi <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowGHi, measure = "RR")
+resRR_LowGHi
+
+resOR_LowGHi <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowGHi, measure = "OR")
+resOR_LowGHi
+
+# Only binary - without change - Education
+binary_LowGHwedu <- LowGH[-c(1,2,3,4,7,8,9,10,11,12,13,14), ]
+resRR_LowGHwedu <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowGHwedu, measure = "RR")
+resRR_LowGHwedu
+
+resOR_LowGHwedu <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowGHwedu, measure = "OR")
+resOR_LowGHwedu
+
+# Combined - 1x change - SMD - Education
+comb_LowGH2edu <- LowGH2[-c(1,2,3,4,7,8,9,10,11,12,13), ]
+clean_comb_LowGHedu <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowGH2edu)
+clean_comb_LowGHedu <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowGHedu, replace=FALSE)
+rescSMD_LowGHedu <- rma(yi = yi, vi = vi, data = clean_comb_LowGHedu)
+rescSMD_LowGHedu
+# Combined - 1x change - OR - Education
+comb_LowGHoredu <- LowGH2[-c(1,2,3,4,7,8,9,10,11,12,13), ]
+clean_comb_LowGHoredu <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowGHoredu)
+clean_comb_LowGHoredu <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowGHoredu, replace=FALSE)
+rescOR_LowGHedu <- rma(yi = yi, vi = vi, data = clean_comb_LowGHoredu)
+rescOR_LowGHedu
+# Combined - SMD - Income
+comb_LowGH2i <- LowGH2[-c(5,6,8,9,10,12,14,15), ]
+clean_comb_LowGHi <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowGH2i)
+clean_comb_LowGHi <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowGHi, replace=FALSE)
+rescSMD_LowGHi <- rma(yi = yi, vi = vi, data = clean_comb_LowGHi)
+rescSMD_LowGHi
+# Combined - OR - Income
+comb_LowGHori <- LowGH2[-c(5,6,8,9,10,12,14,15), ]
+clean_comb_LowGHori <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowGHori)
+clean_comb_LowGHori <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowGHori, replace=FALSE)
+rescOR_LowGHi <- rma(yi = yi, vi = vi, data = clean_comb_LowGHori)
+rescOR_LowGHi
+
+# Combined - without change - SMD - Education
+comb_LowGHbedu <- LowGH2[-c(1,2,3,4,7,8,9,10,11,12,13,14), ]
+clean_comb_LowGHbedu <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowGHbedu)
+clean_comb_LowGHbedu <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowGHbedu, replace=FALSE)
+rescSMD_LowGHbedu <- rma(yi = yi, vi = vi, data = clean_comb_LowGHbedu)
+rescSMD_LowGHbedu
+# Combined - without change - OR - Education
+comb_LowGHorbedu <- LowGH2[-c(1,2,3,4,7,8,9,10,11,12,13,14), ]
+clean_comb_LowGHorbedu <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowGHorbedu)
+clean_comb_LowGHorbedu <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowGHorbedu, replace=FALSE)
+rescOR_LowGHbedu <- rma(yi = yi, vi = vi, data = clean_comb_LowGHorbedu)
+rescOR_LowGHbedu
+```
+
+## Perception of general health - high SES
+```{r perception of gh high}
+HighGH <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Perception of GH (high)")
+
+# Only binary - 1x change
+binary_HighGH <- HighGH[-c(3,7,8,9), ]
+resRR_HighGH <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighGH, measure = "RR")
+resRR_HighGH
+funnel(resRR_HighGH)
+regtest(resRR_HighGH)
+
+resOR_HighGH <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighGH, measure = "OR")
+resOR_HighGH
+funnel(resOR_HighGH)
+regtest(resOR_HighGH)
+
+# Only binary - without change
+binary_HighGHw <- HighGH[-c(3,7,8,9,13), ]
+resRR_HighGHw <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighGHw, measure = "RR")
+resRR_HighGHw
+
+resOR_HighGHw <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighGHw, measure = "OR")
+resOR_HighGHw
+
+# Only continuous
+cont_HighGH <- HighGH[-c(1,2,4,5,6,10,11,13,14), ]
+resSMD_HighGH <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_HighGH, measure = "SMD")
+resSMD_HighGH
+
+HighGH2 <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Perception of GH (high 2)")
+
+# Combined - 1x change - SMD
+clean_comb_HighGH <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=HighGH2)
+clean_comb_HighGH <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighGH, replace=FALSE)
+rescSMD_HighGH <- rma(yi = yi, vi = vi, data = clean_comb_HighGH)
+rescSMD_HighGH
+funnel(rescSMD_HighGH)
+regtest(rescSMD_HighGH)
+# Combined - 1x change - OR
+clean_comb_HighGHor <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=HighGH2)
+clean_comb_HighGHor <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighGHor, replace=FALSE)
+rescOR_HighGH <- rma(yi = yi, vi = vi, data = clean_comb_HighGHor)
+rescOR_HighGH
+funnel(rescOR_HighGH)
+regtest(rescOR_HighGH)
+
+# Combined - without change - SMD
+comb_HighGHb <- HighGH2[-c(13), ]
+clean_comb_HighGHb <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighGHb)
+clean_comb_HighGHb <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighGHb, replace=FALSE)
+rescSMD_HighGHb <- rma(yi = yi, vi = vi, data = clean_comb_HighGHb)
+rescSMD_HighGHb
+funnel(rescSMD_HighGHb)
+regtest(rescSMD_HighGHb)
+# Combined - without change - OR
+comb_HighGHorb <- HighGH2[-c(13), ]
+clean_comb_HighGHorb <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighGHorb)
+clean_comb_HighGHorb <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighGHorb, replace=FALSE)
+rescOR_HighGHb <- rma(yi = yi, vi = vi, data = clean_comb_HighGHorb)
+rescOR_HighGHb
+funnel(rescOR_HighGHb)
+regtest(rescOR_HighGHb)
+```
+
+## Perception of general health - high SES (sub-group analyses)
+```{r perception of gh high sub-group}
+# Only binary - 1x change - Education
+binary_HighGHedu <- HighGH[-c(1,2,3,4,7,8,9,10,11,12), ]
+resRR_HighGHedu <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighGHedu, measure = "RR")
+resRR_HighGHedu
+
+resOR_HighGHedu <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighGHedu, measure = "OR")
+resOR_HighGHedu
+# Only binary - Income
+binary_HighGHi <- HighGH[-c(3,5,6,7,8,9,11,13,14), ]
+resRR_HighGHi <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighGHi, measure = "RR")
+resRR_HighGHi
+
+resOR_HighGHi <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighGHi, measure = "OR")
+resOR_HighGHi
+
+# Only binary - without change - Education
+binary_HighGHwedu <- HighGH[-c(1,2,3,4,7,8,9,10,11,12,13), ]
+resRR_HighGHwedu <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighGHwedu, measure = "RR")
+resRR_HighGHwedu
+
+resOR_HighGHwedu <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighGHwedu, measure = "OR")
+resOR_HighGHwedu
+
+# Combined - 1x change - SMD - Education
+comb_HighGH2edu <- HighGH2[-c(1,2,3,4,7,8,9,10,11,12), ]
+clean_comb_HighGHedu <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighGH2edu)
+clean_comb_HighGHedu <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighGHedu, replace=FALSE)
+rescSMD_HighGHedu <- rma(yi = yi, vi = vi, data = clean_comb_HighGHedu)
+rescSMD_HighGHedu
+# Combined - 1x change - OR - Education
+comb_HighGHoredu <- HighGH2[-c(1,2,3,4,7,8,9,10,11,12), ]
+clean_comb_HighGHoredu <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighGHoredu)
+clean_comb_HighGHoredu <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighGHoredu, replace=FALSE)
+rescOR_HighGHedu <- rma(yi = yi, vi = vi, data = clean_comb_HighGHoredu)
+rescOR_HighGHedu
+# Combined - SMD - Income
+comb_HighGH2i <- HighGH2[-c(5,6,8,9,11,13,14), ]
+clean_comb_HighGHi <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighGH2i)
+clean_comb_HighGHi <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighGHi, replace=FALSE)
+rescSMD_HighGHi <- rma(yi = yi, vi = vi, data = clean_comb_HighGHi)
+rescSMD_HighGHi
+# Combined - OR - Income
+comb_HighGHori <- HighGH2[-c(5,6,8,9,11,13,14), ]
+clean_comb_HighGHori <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighGHori)
+clean_comb_HighGHori <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighGHori, replace=FALSE)
+rescOR_HighGHi <- rma(yi = yi, vi = vi, data = clean_comb_HighGHori)
+rescOR_HighGHi
+
+# Combined - without change - SMD - Education
+comb_HighGHbedu <- HighGH2[-c(1,2,3,4,7,8,9,10,11,12,13), ]
+clean_comb_HighGHbedu <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighGHbedu)
+clean_comb_HighGHbedu <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighGHbedu, replace=FALSE)
+rescSMD_HighGHbedu <- rma(yi = yi, vi = vi, data = clean_comb_HighGHbedu)
+rescSMD_HighGHbedu
+# Combined - without change - OR - Education
+comb_HighGHorbedu <- HighGH2[-c(1,2,3,4,7,8,9,10,11,12,13), ]
+clean_comb_HighGHorbedu <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighGHorbedu)
+clean_comb_HighGHorbedu <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighGHorbedu, replace=FALSE)
+rescOR_HighGHbedu <- rma(yi = yi, vi = vi, data = clean_comb_HighGHorbedu)
+rescOR_HighGHbedu
+```
+
+## Weight status - low SES
+```{r weight status low}
+LowWS <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Weight status (low)")
+
+# Only binary - 1x change
+binary_LowWS <- LowWS[-c(1,3,4,5,6,9,12,14,16,17), ]
+resRR_LowWS <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowWS, measure = "RR")
+resRR_LowWS
+funnel(resRR_LowWS)
+regtest(resRR_LowWS)
+
+resOR_LowWS <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowWS, measure = "OR")
+resOR_LowWS
+funnel(resOR_LowWS)
+regtest(resOR_LowWS)
+
+# Only binary - without change
+binary_LowWSb <- LowWS[-c(1,3,4,5,6,9,10,12,14,16,17), ]
+resRR_LowWSb <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowWSb, measure = "RR")
+resRR_LowWSb
+funnel(resRR_LowWSb)
+regtest(resRR_LowWSb)
+
+resOR_LowWSb <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowWSb, measure = "OR")
+resOR_LowWSb
+funnel(resOR_LowWSb)
+regtest(resOR_LowWSb)
+
+# Only continuous - 2x change
+cont_LowWS <- LowWS[-c(2,3,4,7,8,10,11,13,15,19,21), ]
+resSMD_LowWS <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_LowWS, measure = "SMD")
+resSMD_LowWS
+funnel(resSMD_LowWS)
+regtest(resSMD_LowWS)
+
+# Only continuous - without change
+cont_LowWSb <- LowWS[-c(1,2,3,4,7,8,10,11,13,14,15,19,21), ]
+resSMD_LowWSb <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_LowWSb, measure = "SMD")
+resSMD_LowWSb
+
+LowWS2 <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Weight status (low 2)")
+
+# Combined - 3x change - SMD
+comb_LowWS <- LowWS2[-c(3,4), ]
+clean_comb_LowWS <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowWS)
+clean_comb_LowWS <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowWS, replace=FALSE)
+rescSMD_LowWS <- rma(yi = yi, vi = vi, data = clean_comb_LowWS)
+rescSMD_LowWS
+funnel(rescSMD_LowWS)
+regtest(rescSMD_LowWS)
+# Combined - 3x change - OR
+comb_LowWSor <- LowWS2[-c(3,4), ]
+clean_comb_LowWSor <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowWSor)
+clean_comb_LowWSor <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowWSor, replace=FALSE)
+rescOR_LowWS <- rma(yi = yi, vi = vi, data = clean_comb_LowWSor)
+rescOR_LowWS
+funnel(rescOR_LowWS)
+regtest(rescOR_LowWS)
+
+# Combined - without change - SMD
+comb_LowWSb <- LowWS[-c(1,3,4,10,14), ]
+clean_comb_LowWSb <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowWSb)
+clean_comb_LowWSb <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowWSb, replace=FALSE)
+rescSMD_LowWSb <- rma(yi = yi, vi = vi, data = clean_comb_LowWSb)
+rescSMD_LowWSb
+funnel(rescSMD_LowWSb)
+regtest(rescSMD_LowWSb)
+# Combined - without change - OR
+comb_LowWSorb <- LowWS[-c(1,3,4,10,14), ]
+clean_comb_LowWSorb <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowWSorb)
+clean_comb_LowWSorb <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowWSorb, replace=FALSE)
+rescOR_LowWSb <- rma(yi = yi, vi = vi, data = clean_comb_LowWSorb)
+rescOR_LowWSb
+funnel(rescOR_LowWSb)
+regtest(rescOR_LowWSb)
+```
+
+## Weight status - low SES (sub-group analyses)
+```{r weight status low sub-group}
+# Only continuous - 1x change - self-report
+cont_LowWSsr <- LowWS[-c(2,3,4,5,7,8,10,11,12,13,14,15,19,21), ]
+resSMD_LowWSsr <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_LowWSsr, measure = "SMD")
+resSMD_LowWSsr
+# Only continuous - without change - self-report
+cont_LowWSsrw <- LowWS[-c(1,2,3,4,5,7,8,10,11,12,13,14,15,19,21), ]
+resSMD_LowWSsrw <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_LowWSsrw, measure = "SMD")
+resSMD_LowWSsrw
+
+# Only continuous - 1x change - objective
+cont_LowWSob <- LowWS[-c(1,2,3,4,6,7,8,9,10,11,13,15,16,17,18,19,20,21), ]
+resSMD_LowWSob <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_LowWSob, measure = "SMD")
+resSMD_LowWSob
+
+# Combined - 1x change - SMD - self-report
+comb_LowWS2sr <- LowWS2[-c(3,4,5,10,12,14), ]
+clean_comb_LowWSsr <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowWS2sr)
+clean_comb_LowWSsr <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowWSsr, replace=FALSE)
+rescSMD_LowWSsr <- rma(yi = yi, vi = vi, data = clean_comb_LowWSsr)
+rescSMD_LowWSsr
+funnel(rescSMD_LowWSsr)
+regtest(rescSMD_LowWSsr)
+# Combined - 1x change - OR - self-report
+comb_LowWSorsr <- LowWS2[-c(3,4,5,10,12,14), ]
+clean_comb_LowWSorsr <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowWSorsr)
+clean_comb_LowWSorsr <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowWSorsr, replace=FALSE)
+rescOR_LowWSsr <- rma(yi = yi, vi = vi, data = clean_comb_LowWSorsr)
+rescOR_LowWSsr
+funnel(rescOR_LowWSsr)
+regtest(rescOR_LowWSsr)
+# Combined - 2x change - SMD - objective
+comb_LowWS2ob <- LowWS2[-c(1,2,3,4,6,7,8,9,11,13,15,16,17,18,19,20,21), ]
+clean_comb_LowWSob <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowWS2ob)
+clean_comb_LowWSob <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowWSob, replace=FALSE)
+rescSMD_LowWSob <- rma(yi = yi, vi = vi, data = clean_comb_LowWSob)
+rescSMD_LowWSob
+# Combined - 2x change - OR - objective
+comb_LowWSorob <- LowWS2[-c(1,2,3,4,6,7,8,9,11,13,15,16,17,18,19,20,21), ]
+clean_comb_LowWSorob <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowWSorob)
+clean_comb_LowWSorob <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowWSorob, replace=FALSE)
+rescOR_LowWSob <- rma(yi = yi, vi = vi, data = clean_comb_LowWSorob)
+rescOR_LowWSob
+
+# Combined - without change - SMD - self-report
+comb_LowWS2srw <- LowWS2[-c(1,3,4,5,10,12,14), ]
+clean_comb_LowWSsrw <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowWS2srw)
+clean_comb_LowWSsrw <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowWSsrw, replace=FALSE)
+rescSMD_LowWSsrw <- rma(yi = yi, vi = vi, data = clean_comb_LowWSsrw)
+rescSMD_LowWSsrw
+funnel(rescSMD_LowWSsrw)
+regtest(rescSMD_LowWSsrw)
+# Combined - without change - OR - self-report
+comb_LowWSorsrw <- LowWS2[-c(1,3,4,5,10,12,14), ]
+clean_comb_LowWSorsrw <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowWSorsrw)
+clean_comb_LowWSorsrw <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowWSorsrw, replace=FALSE)
+rescOR_LowWSsrw <- rma(yi = yi, vi = vi, data = clean_comb_LowWSorsrw)
+rescOR_LowWSsrw
+funnel(rescOR_LowWSsrw)
+regtest(rescOR_LowWSsrw)
+
+# Combined - SMD - cross-sectional
+comb_LowWS2cs <- LowWS2[-c(1,3,4,7,10,14), ]
+clean_comb_LowWScs <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowWS2cs)
+clean_comb_LowWScs <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowWScs, replace=FALSE)
+rescSMD_LowWScs <- rma(yi = yi, vi = vi, data = clean_comb_LowWScs)
+rescSMD_LowWScs
+funnel(rescSMD_LowWScs)
+regtest(rescSMD_LowWScs)
+# Combined - OR - cross-sectional
+comb_LowWSorcs <- LowWS2[-c(1,3,4,7,10,14), ]
+clean_comb_LowWSorcs <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowWSorcs)
+clean_comb_LowWSorcs <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowWSorcs, replace=FALSE)
+rescOR_LowWScs <- rma(yi = yi, vi = vi, data = clean_comb_LowWSorcs)
+rescOR_LowWScs
+funnel(rescOR_LowWScs)
+regtest(rescOR_LowWScs)
+# Combined - 3x change - SMD - longitudinal
+comb_LowWS2ld <- LowWS2[-c(2,3,4,5,6,8,9,11,12,13,15,16,17,18,19,20,21), ]
+clean_comb_LowWSld <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowWS2ld)
+clean_comb_LowWSld <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowWSld, replace=FALSE)
+rescSMD_LowWSld <- rma(yi = yi, vi = vi, data = clean_comb_LowWSld)
+rescSMD_LowWSld
+# Combined - 3x change - OR - longitudinal
+comb_LowWSorld <- LowWS2[-c(2,3,4,5,6,8,9,11,12,13,15,16,17,18,19,20,21), ]
+clean_comb_LowWSorld <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowWSorld)
+clean_comb_LowWSorld <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowWSorld, replace=FALSE)
+rescOR_LowWSld <- rma(yi = yi, vi = vi, data = clean_comb_LowWSorld)
+rescOR_LowWSld
+
+# Only binary - 1x change - IMD
+binary_LowWSimd <- LowWS[-c(1,2,3,4,5,6,7,8,9,12,13,14,16,17,19,20,21), ]
+resRR_LowWSimd <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowWSimd, measure = "RR")
+resRR_LowWSimd
+
+resOR_LowWSimd <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowWSimd, measure = "OR")
+resOR_LowWSimd
+# Only binary - without change - IMD
+binary_LowWSimdw <- LowWS[-c(1,2,3,4,5,6,7,8,9,10,12,13,14,16,17,19,20,21), ]
+resRR_LowWSimdw <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowWSimdw, measure = "RR")
+resRR_LowWSimdw
+
+resOR_LowWSimdw <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowWSimdw, measure = "OR")
+resOR_LowWSimdw
+
+# Only binary - Income
+binary_LowWSi <- LowWS[-c(1,3,4,5,6,9,10,11,12,14,15,16,17,18,19,21), ]
+resRR_LowWSi <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowWSi, measure = "RR")
+resRR_LowWSi
+
+resOR_LowWSi <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowWSi, measure = "OR")
+resOR_LowWSi
+
+# Only continuous - 1x change - IMD
+cont_LowWSimd <- LowWS[-c(1,2,3,4,6,7,8,10,11,12,13,15,16,19,20,21), ]
+resSMD_LowWSimd <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_LowWSimd, measure = "SMD")
+resSMD_LowWSimd
+# Only continuous - without change - IMD
+cont_LowWSimdw <- LowWS[-c(1,2,3,4,6,7,8,10,11,12,13,14,15,16,19,20,21), ]
+resSMD_LowWSimdw <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_LowWSimdw, measure = "SMD")
+resSMD_LowWSimdw
+
+# Only continuous - Income
+cont_LowWSi <- LowWS[-c(1,2,3,4,5,7,8,9,10,11,12,13,14,15,17,18,19,21), ]
+resSMD_LowWSi <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_LowWSi, measure = "SMD")
+resSMD_LowWSi
+
+# Combined - 2x change - SMD - IMD
+comb_LowWS2imd <- LowWS2[-c(1,2,3,4,6,7,8,12,13,16,19,20,21), ]
+clean_comb_LowWSimd <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowWS2imd)
+clean_comb_LowWSimd <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowWSimd, replace=FALSE)
+rescSMD_LowWSimd <- rma(yi = yi, vi = vi, data = clean_comb_LowWSimd)
+rescSMD_LowWSimd
+# Combined - 2x change - OR - IMD
+comb_LowWSorimd <- LowWS2[-c(1,2,3,4,6,7,8,12,13,16,19,20,21), ]
+clean_comb_LowWSorimd <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowWSorimd)
+clean_comb_LowWSorimd <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowWSorimd, replace=FALSE)
+rescOR_LowWSimd <- rma(yi = yi, vi = vi, data = clean_comb_LowWSorimd)
+rescOR_LowWSimd
+# Combined - SMD - Income
+comb_LowWS2i <- LowWS2[-c(1,3,4,5,9,10,11,12,14,15,17,18,19,21), ]
+clean_comb_LowWSi <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowWS2i)
+clean_comb_LowWSi <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowWSi, replace=FALSE)
+rescSMD_LowWSi <- rma(yi = yi, vi = vi, data = clean_comb_LowWSi)
+rescSMD_LowWSi
+# Combined - OR - Income
+comb_LowWSori <- LowWS2[-c(1,3,4,5,9,10,11,12,14,15,17,18,19,21), ]
+clean_comb_LowWSori <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowWSori)
+clean_comb_LowWSori <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowWSori, replace=FALSE)
+rescOR_LowWSi <- rma(yi = yi, vi = vi, data = clean_comb_LowWSori)
+rescOR_LowWSi
+
+# Combined - without change - SMD - IMD
+comb_LowWSbimd <- LowWS2[-c(1,2,3,4,6,7,8,10,12,13,14,16,19,20,21), ]
+clean_comb_LowWSbimd <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowWSbimd)
+clean_comb_LowWSbimd <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowWSbimd, replace=FALSE)
+rescSMD_LowWSbimd <- rma(yi = yi, vi = vi, data = clean_comb_LowWSbimd)
+rescSMD_LowWSbimd
+# Combined - without change - OR - IMD
+comb_LowWSorbimd <- LowWS2[-c(1,2,3,4,6,7,8,10,12,13,14,16,19,20,21), ]
+clean_comb_LowWSorbimd <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowWSorbimd)
+clean_comb_LowWSorbimd <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowWSorbimd, replace=FALSE)
+rescOR_LowWSbimd <- rma(yi = yi, vi = vi, data = clean_comb_LowWSorbimd)
+rescOR_LowWSbimd
+```
+
+## Weight status - high SES
+```{r weight status high}
+HighWS <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Weight status (high)")
+
+# Only binary - 1x change
+binary_HighWS <- HighWS[-c(2,3,5,6,7,8,11,13,15,17,18,22), ]
+resRR_HighWS <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighWS, measure = "RR")
+resRR_HighWS
+funnel(resRR_HighWS)
+regtest(resRR_HighWS)
+
+resOR_HighWS <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighWS, measure = "OR")
+resOR_HighWS
+funnel(resOR_HighWS)
+regtest(resOR_HighWS)
+
+# Only binary - without change
+binary_HighWSb <- HighWS[-c(2,3,5,6,7,8,11,12,13,15,17,18,22), ]
+resRR_HighWSb <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighWSb, measure = "RR")
+resRR_HighWSb
+funnel(resRR_HighWSb)
+regtest(resRR_HighWSb)
+
+resOR_HighWSb <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighWSb, measure = "OR")
+resOR_HighWSb
+funnel(resOR_HighWSb)
+regtest(resOR_HighWSb)
+
+# Only continuous - 3x change
+cont_HighWS <- HighWS[-c(1,2,4,5,6,9,10,12,14,16,20,23), ]
+resSMD_HighWS <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_HighWS, measure = "SMD")
+resSMD_HighWS
+funnel(resSMD_HighWS)
+regtest(resSMD_HighWS)
+
+# Only continuous - without change
+cont_HighWSb <- HighWS[-c(1,2,3,4,5,6,9,10,12,14,15,16,20,22,23), ]
+resSMD_HighWSb <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_HighWSb, measure = "SMD")
+resSMD_HighWSb
+
+HighWS2 <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Weight status (high 2)")
+
+# Combined - 4x change - SMD
+comb_HighWS <- HighWS2[-c(2,5,6), ]
+clean_comb_HighWS <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighWS)
+clean_comb_HighWS <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighWS, replace=FALSE)
+rescSMD_HighWS <- rma(yi = yi, vi = vi, data = clean_comb_HighWS)
+rescSMD_HighWS
+funnel(rescSMD_HighWS)
+regtest(rescSMD_HighWS)
+# Combined - 4x change - OR
+comb_HighWSor <- HighWS2[-c(2,5,6), ]
+clean_comb_HighWSor <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighWSor)
+clean_comb_HighWSor <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighWSor, replace=FALSE)
+rescOR_HighWS <- rma(yi = yi, vi = vi, data = clean_comb_HighWSor)
+rescOR_HighWS
+funnel(rescOR_HighWS)
+regtest(rescOR_HighWS)
+
+# Combined - without change - SMD
+comb_HighWSb <- HighWS[-c(2,3,5,6,12,15,22), ]
+clean_comb_HighWSb <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighWSb)
+clean_comb_HighWSb <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighWSb, replace=FALSE)
+rescSMD_HighWSb <- rma(yi = yi, vi = vi, data = clean_comb_HighWSb)
+rescSMD_HighWSb
+funnel(rescSMD_HighWSb)
+regtest(rescSMD_HighWSb)
+# Combined - without change - OR
+comb_HighWSorb <- HighWS[-c(2,3,5,6,12,15,22), ]
+clean_comb_HighWSorb <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighWSorb)
+clean_comb_HighWSorb <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighWSorb, replace=FALSE)
+rescOR_HighWSb <- rma(yi = yi, vi = vi, data = clean_comb_HighWSorb)
+rescOR_HighWSb
+funnel(rescOR_HighWSb)
+regtest(rescOR_HighWSb)
+```
+
+## Weight status - high SES (sub-group analyses)
+```{r weight status high sub-group}
+# Only continuous - 1x change - self-report
+cont_HighWSsr <- HighWS[-c(1,2,4,5,6,7,9,10,12,13,14,15,16,20,22,23), ]
+resSMD_HighWSsr <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_HighWSsr, measure = "SMD")
+resSMD_HighWSsr
+# Only continuous - without change - self-report
+cont_HighWSsrw <- HighWS[-c(1,2,3,4,5,6,7,9,10,12,13,14,15,16,20,22,23), ]
+resSMD_HighWSsrw <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_HighWSsrw, measure = "SMD")
+resSMD_HighWSsrw
+
+# Only continuous - 3x change - objective
+cont_HighWSob <- HighWS[-c(1,2,3,4,5,6,8,9,10,11,12,14,16,17,18,19,20,21,23), ]
+resSMD_HighWSob <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_HighWSob, measure = "SMD")
+resSMD_HighWSob
+
+# Combined - 1x change - SMD - self-report
+comb_HighWS2sr <- HighWS2[-c(2,5,6,7,12,13,15,22), ]
+clean_comb_HighWSsr <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighWS2sr)
+clean_comb_HighWSsr <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighWSsr, replace=FALSE)
+rescSMD_HighWSsr <- rma(yi = yi, vi = vi, data = clean_comb_HighWSsr)
+rescSMD_HighWSsr
+funnel(rescSMD_HighWSsr)
+regtest(rescSMD_HighWSsr)
+# Combined - 1x change - OR - self-report
+comb_HighWSorsr <- HighWS2[-c(2,5,6,7,12,13,15,22), ]
+clean_comb_HighWSorsr <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighWSorsr)
+clean_comb_HighWSorsr <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighWSorsr, replace=FALSE)
+rescOR_HighWSsr <- rma(yi = yi, vi = vi, data = clean_comb_HighWSorsr)
+rescOR_HighWSsr
+funnel(rescOR_HighWSsr)
+regtest(rescOR_HighWSsr)
+# Combined - 3x change - SMD - objective
+comb_HighWS2ob <- HighWS2[-c(1,2,3,4,5,6,8,9,10,11,14,16,17,18,19,20,21,23), ]
+clean_comb_HighWSob <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighWS2ob)
+clean_comb_HighWSob <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighWSob, replace=FALSE)
+rescSMD_HighWSob <- rma(yi = yi, vi = vi, data = clean_comb_HighWSob)
+rescSMD_HighWSob
+# Combined - 3x change - OR - objective
+comb_HighWSorob <- HighWS2[-c(1,2,3,4,5,6,8,9,10,11,14,16,17,18,19,20,21,23), ]
+clean_comb_HighWSorob <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighWSorob)
+clean_comb_HighWSorob <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighWSorob, replace=FALSE)
+rescOR_HighWSob <- rma(yi = yi, vi = vi, data = clean_comb_HighWSorob)
+rescOR_HighWSob
+
+# Combined - without change - SMD - self-report
+comb_HighWS2srw <- HighWS2[-c(2,3,5,6,7,12,13,15,22), ]
+clean_comb_HighWSsrw <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighWS2srw)
+clean_comb_HighWSsrw <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighWSsrw, replace=FALSE)
+rescSMD_HighWSsrw <- rma(yi = yi, vi = vi, data = clean_comb_HighWSsrw)
+rescSMD_HighWSsrw
+funnel(rescSMD_HighWSsrw)
+regtest(rescSMD_HighWSsrw)
+# Combined - without change - OR - self-report
+comb_HighWSorsrw <- HighWS2[-c(2,3,5,6,7,12,13,15,22), ]
+clean_comb_HighWSorsrw <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighWSorsrw)
+clean_comb_HighWSorsrw <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighWSorsrw, replace=FALSE)
+rescOR_HighWSsrw <- rma(yi = yi, vi = vi, data = clean_comb_HighWSorsrw)
+rescOR_HighWSsrw
+funnel(rescOR_HighWSsrw)
+regtest(rescOR_HighWSsrw)
+
+# Only continuous - cross-sectional
+cont_HighWScs <- HighWS[-c(1,2,3,4,5,6,9,10,12,14,15,16,20,22,23), ]
+resSMD_HighWScs <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_HighWScs, measure = "SMD")
+resSMD_HighWScs
+
+# Only continuous - 3x change - longitudinal
+cont_HighWSld <- HighWS[-c(1,2,4,5,6,7,8,9,10,11,12,13,14,16,17,18,19,20,21,23), ]
+resSMD_HighWSld <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_HighWSld, measure = "SMD")
+resSMD_HighWSld
+
+# Combined - SMD - cross-sectional
+comb_HighWS2cs <- HighWS2[-c(2,3,5,6,9,12,15,22), ]
+clean_comb_HighWScs <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighWS2cs)
+clean_comb_HighWScs <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighWScs, replace=FALSE)
+rescSMD_HighWScs <- rma(yi = yi, vi = vi, data = clean_comb_HighWScs)
+rescSMD_HighWScs
+funnel(rescSMD_HighWScs)
+regtest(rescSMD_HighWScs)
+# Combined - OR - cross-sectional
+comb_HighWSorcs <- HighWS2[-c(2,3,5,6,9,12,15,22), ]
+clean_comb_HighWSorcs <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighWSorcs)
+clean_comb_HighWSorcs <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighWSorcs, replace=FALSE)
+rescOR_HighWScs <- rma(yi = yi, vi = vi, data = clean_comb_HighWSorcs)
+rescOR_HighWScs
+funnel(rescOR_HighWScs)
+regtest(rescOR_HighWScs)
+# Combined - 4x change - SMD - longitudinal
+comb_HighWS2ld <- HighWS2[-c(1,2,4,5,6,7,8,10,11,13,14,16,17,18,19,20,21,23), ]
+clean_comb_HighWSld <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighWS2ld)
+clean_comb_HighWSld <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighWSld, replace=FALSE)
+rescSMD_HighWSld <- rma(yi = yi, vi = vi, data = clean_comb_HighWSld)
+rescSMD_HighWSld
+# Combined - 4x change - OR - longitudinal
+comb_HighWSorld <- HighWS2[-c(1,2,4,5,6,7,8,10,11,13,14,16,17,18,19,20,21,23), ]
+clean_comb_HighWSorld <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighWSorld)
+clean_comb_HighWSorld <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighWSorld, replace=FALSE)
+rescOR_HighWSld <- rma(yi = yi, vi = vi, data = clean_comb_HighWSorld)
+rescOR_HighWSld
+
+# Only binary - 1x change - IMD
+binary_HighWSimd <- HighWS[-c(1,2,3,4,5,6,7,8,9,10,11,13,14,15,17,18,20,21,22,23), ]
+resRR_HighWSimd <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighWSimd, measure = "RR")
+resRR_HighWSimd
+
+resOR_HighWSimd <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighWSimd, measure = "OR")
+resOR_HighWSimd
+
+# Only binary - Income
+binary_HighWSi <- HighWS[-c(1,2,3,5,6,7,8,11,12,13,15,16,17,18,19,20,22,23), ]
+resRR_HighWSi <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighWSi, measure = "RR")
+resRR_HighWSi
+
+resOR_HighWSi <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighWSi, measure = "OR")
+resOR_HighWSi
+
+# Only continuous - 1x change - IMD
+cont_HighWSimd <- HighWS[-c(1,2,3,4,5,6,8,9,10,12,13,14,16,17,20,21,22,23), ]
+resSMD_HighWSimd <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_HighWSimd, measure = "SMD")
+resSMD_HighWSimd
+# Only continuous - without change - IMD
+cont_HighWSimdw <- HighWS[-c(1,2,3,4,5,6,8,9,10,12,13,14,15,16,17,20,21,22,23), ]
+resSMD_HighWSimdw <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_HighWSimdw, measure = "SMD")
+resSMD_HighWSimdw
+
+# Only continuous - 1x change - Income
+cont_HighWSi <- HighWS[-c(1,2,3,4,5,6,7,9,10,11,12,13,14,15,16,18,19,20,23), ]
+resSMD_HighWSi <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_HighWSi, measure = "SMD")
+resSMD_HighWSi
+# Only continuous - without change - Income
+cont_HighWSiw <- HighWS[-c(1,2,3,4,5,6,7,9,10,11,12,13,14,15,16,18,19,20,22,23), ]
+resSMD_HighWSiw <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_HighWSiw, measure = "SMD")
+resSMD_HighWSiw
+
+# Combined - 2x change - SMD - IMD
+comb_HighWS2imd <- HighWS2[-c(1,2,3,4,5,6,8,9,10,13,14,17,20,21,22,23), ]
+clean_comb_HighWSimd <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighWS2imd)
+clean_comb_HighWSimd <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighWSimd, replace=FALSE)
+rescSMD_HighWSimd <- rma(yi = yi, vi = vi, data = clean_comb_HighWSimd)
+rescSMD_HighWSimd
+# Combined - 2x change - OR - IMD
+comb_HighWSorimd <- HighWS2[-c(1,2,3,4,5,6,8,9,10,13,14,17,20,21,22,23), ]
+clean_comb_HighWSorimd <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighWSorimd)
+clean_comb_HighWSorimd <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighWSorimd, replace=FALSE)
+rescOR_HighWSimd <- rma(yi = yi, vi = vi, data = clean_comb_HighWSorimd)
+rescOR_HighWSimd
+# Combined - 1x change - SMD - Income
+comb_HighWS2i <- HighWS2[-c(1,2,3,5,6,7,11,12,13,15,16,18,19,20,23), ]
+clean_comb_HighWSi <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighWS2i)
+clean_comb_HighWSi <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighWSi, replace=FALSE)
+rescSMD_HighWSi <- rma(yi = yi, vi = vi, data = clean_comb_HighWSi)
+rescSMD_HighWSi
+# Combined - 1x change - OR - Income
+comb_HighWSori <- HighWS2[-c(1,2,3,5,6,7,11,12,13,15,16,18,19,20,23), ]
+clean_comb_HighWSori <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighWSori)
+clean_comb_HighWSori <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighWSori, replace=FALSE)
+rescOR_HighWSi <- rma(yi = yi, vi = vi, data = clean_comb_HighWSori)
+rescOR_HighWSi
+# Combined - 1x change - SMD - Occupational class
+comb_HighWS2oc <- HighWS2[-c(2,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,21,22,23), ]
+clean_comb_HighWSoc <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighWS2oc)
+clean_comb_HighWSoc <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighWSoc, replace=FALSE)
+rescSMD_HighWSoc <- rma(yi = yi, vi = vi, data = clean_comb_HighWSoc)
+rescSMD_HighWSoc
+# Combined - 1x change - OR - Occupational class
+comb_HighWSoroc <- HighWS2[-c(2,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,21,22,23), ]
+clean_comb_HighWSoroc <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighWSoroc)
+clean_comb_HighWSoroc <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighWSoroc, replace=FALSE)
+rescOR_HighWSoc <- rma(yi = yi, vi = vi, data = clean_comb_HighWSoroc)
+rescOR_HighWSoc
+
+# Combined - without change - SMD - IMD
+comb_HighWSbimd <- HighWS2[-c(1,2,3,4,5,6,8,9,10,12,13,14,15,17,20,21,22,23), ]
+clean_comb_HighWSbimd <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighWSbimd)
+clean_comb_HighWSbimd <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighWSbimd, replace=FALSE)
+rescSMD_HighWSbimd <- rma(yi = yi, vi = vi, data = clean_comb_HighWSbimd)
+rescSMD_HighWSbimd
+# Combined - without change - OR - IMD
+comb_HighWSorbimd <- HighWS2[-c(1,2,3,4,5,6,8,9,10,12,13,14,15,17,20,21,22,23), ]
+clean_comb_HighWSorbimd <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighWSorbimd)
+clean_comb_HighWSorbimd <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighWSorbimd, replace=FALSE)
+rescOR_HighWSbimd <- rma(yi = yi, vi = vi, data = clean_comb_HighWSorbimd)
+rescOR_HighWSbimd
+# Combined - without change - SMD - Income
+comb_HighWS2i <- HighWS2[-c(1,2,3,5,6,7,11,12,13,15,16,18,19,20,22,23), ]
+clean_comb_HighWSi <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighWS2i)
+clean_comb_HighWSi <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighWSi, replace=FALSE)
+rescSMD_HighWSi <- rma(yi = yi, vi = vi, data = clean_comb_HighWSi)
+rescSMD_HighWSi
+# Combined - without change - OR - Income
+comb_HighWSori <- HighWS2[-c(1,2,3,5,6,7,11,12,13,15,16,18,19,20,22,23), ]
+clean_comb_HighWSori <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighWSori)
+clean_comb_HighWSori <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighWSori, replace=FALSE)
+rescOR_HighWSi <- rma(yi = yi, vi = vi, data = clean_comb_HighWSori)
+rescOR_HighWSi
+```
+
+# HEALTH BEHAVIOURS
+## Alcohol consumption - low SES
+```{r alcohol consumption low}
+LowAC <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Alcohol consumption (low)")
+
+# Only binary
+binary_LowAC <- LowAC[-c(3,4,6), ]
+resRR_LowAC <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowAC, measure = "RR")
+resRR_LowAC
+
+resOR_LowAC <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowAC, measure = "OR")
+resOR_LowAC
+
+# Only continuous - 2x change
+cont_LowAC <- LowAC[-c(2,5,7), ]
+resSMD_LowAC <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_LowAC, measure = "SMD")
+resSMD_LowAC
+
+LowAC2 <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Alcohol consumption (low 2)")
+
+# Combined - 2x change - SMD
+clean_comb_LowAC <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=LowAC2)
+clean_comb_LowAC <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowAC, replace=FALSE)
+rescSMD_LowAC <- rma(yi = yi, vi = vi, data = clean_comb_LowAC)
+rescSMD_LowAC
+# Combined - 2x change - OR
+clean_comb_LowACor <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=LowAC2)
+clean_comb_LowACor <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowACor, replace=FALSE)
+rescOR_LowAC <- rma(yi = yi, vi = vi, data = clean_comb_LowACor)
+rescOR_LowAC
+# Combined - without change - SMD
+comb_LowACb <- LowAC2[-c(3,6), ]
+clean_comb_LowACb <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowACb)
+clean_comb_LowACb <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowACb, replace=FALSE)
+rescSMD_LowACb <- rma(yi = yi, vi = vi, data = clean_comb_LowACb)
+rescSMD_LowACb
+# Combined - without change - OR
+comb_LowACorb <- LowAC2[-c(3,6), ]
+clean_comb_LowACorb <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowACorb)
+clean_comb_LowACorb <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowACorb, replace=FALSE)
+rescOR_LowACb <- rma(yi = yi, vi = vi, data = clean_comb_LowACorb)
+rescOR_LowACb
+```
+
+## Alcohol consumption - high SES
+```{r alcohol consumption high}
+HighAC <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Alcohol consumption (high)")
+
+# Only binary
+binary_HighAC <- HighAC[-c(3,4,6), ]
+resRR_HighAC <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighAC, measure = "RR")
+resRR_HighAC
+
+resOR_HighAC <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighAC, measure = "OR")
+resOR_HighAC
+
+# Only continuous - 2x change
+cont_HighAC <- HighAC[-c(2,5,7), ]
+resSMD_HighAC <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_HighAC, measure = "SMD")
+resSMD_HighAC
+
+HighAC2 <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Alcohol consumption (high 2)")
+
+# Combined - 2x change - SMD
+clean_comb_HighAC <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=HighAC2)
+clean_comb_HighAC <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighAC, replace=FALSE)
+rescSMD_HighAC <- rma(yi = yi, vi = vi, data = clean_comb_HighAC)
+rescSMD_HighAC
+# Combined - 2x change - OR
+clean_comb_HighACor <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=HighAC2)
+clean_comb_HighACor <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighACor, replace=FALSE)
+rescOR_HighAC <- rma(yi = yi, vi = vi, data = clean_comb_HighACor)
+rescOR_HighAC
+# Combined - without change - SMD
+comb_HighACb <- HighAC2[-c(3,6), ]
+clean_comb_HighACb <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighACb)
+clean_comb_HighACb <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighACb, replace=FALSE)
+rescSMD_HighACb <- rma(yi = yi, vi = vi, data = clean_comb_HighACb)
+rescSMD_HighACb
+# Combined - without change - OR
+comb_HighACorb <- HighAC2[-c(3,6), ]
+clean_comb_HighACorb <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighACorb)
+clean_comb_HighACorb <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighACorb, replace=FALSE)
+rescOR_HighACb <- rma(yi = yi, vi = vi, data = clean_comb_HighACorb)
+rescOR_HighACb
+```
+
+## Fruit and vegetable consumption - low SES
+```{r fru & veg consumption low}
+LowDi <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Fru & veg consumption (low)")
+
+# Only binary
+resRR_LowDi <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = LowDi, measure = "RR")
+resRR_LowDi
+
+resOR_LowDi <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = LowDi, measure = "OR")
+resOR_LowDi
+
+LowDi2 <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Fru & veg consumption (low 2)")
+
+# Combined - SMD
+comb_LowDi <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=LowDi2)
+comb_LowDi<- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowDi, replace=FALSE)
+rescSMD_LowDi <- rma(yi = yi, vi = vi, data = comb_LowDi)
+rescSMD_LowDi
+# Combined - OR
+comb_LowDior <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=LowDi2)
+comb_LowDior <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowDior, replace=FALSE)
+rescOR_LowDi <- rma(yi = yi, vi = vi, data = comb_LowDior)
+rescOR_LowDi
+```
+
+## Fruit and vegetable consumption - high SES
+```{r fru & veg consumption high}
+HighDi <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Fru & veg consumption (high)")
+
+# Only binary
+resRR_HighDi <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = HighDi, measure = "RR")
+resRR_HighDi
+
+resOR_HighDi <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = HighDi, measure = "OR")
+resOR_HighDi
+
+HighDi2 <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Fru & veg consumption (high 2)")
+
+# Combined - SMD
+comb_HighDi <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=HighDi2)
+comb_HighDi<- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighDi, replace=FALSE)
+rescSMD_HighDi <- rma(yi = yi, vi = vi, data = comb_HighDi)
+rescSMD_HighDi
+# Combined - OR
+comb_HighDior <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=HighDi2)
+comb_HighDior <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighDior, replace=FALSE)
+rescOR_HighDi <- rma(yi = yi, vi = vi, data = comb_HighDior)
+rescOR_HighDi
+```
+
+## Sleep - low SES
+```{r sleep low}
+LowSL <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Sleep (low)")
+
+# Combined - SMD
+comb_LowSL <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=LowSL)
+comb_LowSL <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowSL, replace=FALSE)
+rescSMD_LowSL <- rma(yi = yi, vi = vi, data = comb_LowSL)
+rescSMD_LowSL
+# Combined - OR
+comb_LowSLor <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=LowSL)
+comb_LowSLor <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowSLor, replace=FALSE)
+rescOR_LowSL <- rma(yi = yi, vi = vi, data = comb_LowSLor)
+rescOR_LowSL
+```
+
+## Sleep - high SES
+```{r sleep high}
+HighSL <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Sleep (high)")
+
+# Combined - SMD
+comb_HighSL <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=HighSL)
+comb_HighSL <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighSL, replace=FALSE)
+rescSMD_HighSL <- rma(yi = yi, vi = vi, data = comb_HighSL)
+rescSMD_HighSL
+# Combined - OR
+comb_HighSLor <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=HighSL)
+comb_HighSLor <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighSLor, replace=FALSE)
+rescOR_HighSL <- rma(yi = yi, vi = vi, data = comb_HighSLor)
+rescOR_HighSL
+```
+
+## Smoking status - low SES
+```{r smoking status low}
+LowSM <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Smoking status (low)")
+
+# Only binary
+binary_LowSM <- LowSM[-c(1,3,5,7), ]
+resRR_LowSM <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowSM, measure = "RR")
+resRR_LowSM
+
+resOR_LowSM <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_LowSM, measure = "OR")
+resOR_LowSM
+
+# Only continuous - 1x change
+cont_LowSM <- LowSM[-c(2,4,6,8), ]
+resSMD_LowSM <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_LowSM, measure = "SMD")
+resSMD_LowSM
+# Only continuous - without change
+cont_LowSMb <- LowSM[-c(1,2,4,6,8), ]
+resSMD_LowSMb <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_LowSMb, measure = "SMD")
+resSMD_LowSMb
+
+# Combined - 1x change - SMD
+clean_comb_LowSM <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=LowSM)
+clean_comb_LowSM <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowSM, replace=FALSE)
+rescSMD_LowSM <- rma(yi = yi, vi = vi, data = clean_comb_LowSM)
+rescSMD_LowSM
+# Combined - 1x change - OR
+clean_comb_LowSMor <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=LowSM)
+clean_comb_LowSMor <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowSMor, replace=FALSE)
+rescOR_LowSM <- rma(yi = yi, vi = vi, data = clean_comb_LowSMor)
+rescOR_LowSM
+# Combined - without change - SMD
+comb_LowSMb <- LowSM[-c(1), ]
+clean_comb_LowSMb <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_LowSMb)
+clean_comb_LowSMb <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_LowSMb, replace=FALSE)
+rescSMD_LowSMb <- rma(yi = yi, vi = vi, data = clean_comb_LowSMb)
+rescSMD_LowSMb
+# Combined - without change - OR
+comb_LowSMorb <- LowSM[-c(1), ]
+clean_comb_LowSMorb <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_LowSMorb)
+clean_comb_LowSMorb <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_LowSMorb, replace=FALSE)
+rescOR_LowSMb <- rma(yi = yi, vi = vi, data = clean_comb_LowSMorb)
+rescOR_LowSMb
+```
+
+## Smoking status - high SES
+```{r smoking status high}
+HighSM <- read_excel("~/Documents/Spreadsheets/2024-09-09_Systematic-review-data_v01.xlsx", 
+                                           sheet = "Smoking status (high)")
+
+# Only binary
+binary_HighSM <- HighSM[-c(1,3,5,6,8), ]
+resRR_HighSM <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighSM, measure = "RR")
+resRR_HighSM
+
+resOR_HighSM <- rma(ai = epos, bi = eneg, ci = npos, di = nneg, data = binary_HighSM, measure = "OR")
+resOR_HighSM
+
+# Only continuous - 2x change
+cont_HighSM <- HighSM[-c(2,4,7,9), ]
+resSMD_HighSM <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_HighSM, measure = "SMD")
+resSMD_HighSM
+# Only continuous - without change
+cont_HighSMb <- HighSM[-c(1,2,4,6,7,9), ]
+resSMD_HighSMb <- rma(m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data = cont_HighSMb, measure = "SMD")
+resSMD_HighSMb
+
+# Combined - 2x change - SMD
+clean_comb_HighSM <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=HighSM)
+clean_comb_HighSM <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighSM, replace=FALSE)
+rescSMD_HighSM <- rma(yi = yi, vi = vi, data = clean_comb_HighSM)
+rescSMD_HighSM
+# Combined - 2x change - OR
+clean_comb_HighSMor <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=HighSM)
+clean_comb_HighSMor <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighSMor, replace=FALSE)
+rescOR_HighSM <- rma(yi = yi, vi = vi, data = clean_comb_HighSMor)
+rescOR_HighSM
+# Combined - without change - SMD
+comb_HighSMb <- HighSM[-c(1,6), ]
+clean_comb_HighSMb <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighSMb)
+clean_comb_HighSMb <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighSMb, replace=FALSE)
+rescSMD_HighSMb <- rma(yi = yi, vi = vi, data = clean_comb_HighSMb)
+rescSMD_HighSMb
+# Combined - without change - OR
+comb_HighSMorb <- HighSM[-c(1,6), ]
+clean_comb_HighSMorb <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighSMorb)
+clean_comb_HighSMorb <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighSMorb, replace=FALSE)
+rescOR_HighSMb <- rma(yi = yi, vi = vi, data = clean_comb_HighSMorb)
+rescOR_HighSMb
+```
+
+## Smoking status - high SES (sub-group analyses)
+```{r smoking status high sub-group}
+# Combined - 1x change - SMD - IMD
+comb_HighSMi <- HighSM[-c(1,2,4,5,8,9), ]
+clean_comb_HighSMi <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighSMi)
+clean_comb_HighSMi <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighSMi, replace=FALSE)
+rescSMD_HighSMi <- rma(yi = yi, vi = vi, data = clean_comb_HighSMi)
+rescSMD_HighSMi
+# Combined - 1x change - OR - IMD
+comb_HighSMori <- HighSM[-c(1,2,4,5,8,9), ]
+clean_comb_HighSMori <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighSMori)
+clean_comb_HighSMori <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighSMori, replace=FALSE)
+rescOR_HighSMi <- rma(yi = yi, vi = vi, data = clean_comb_HighSMori)
+rescOR_HighSMi
+# Combined - SMD - Education
+comb_HighSMe <- HighSM[-c(1,2,3,6,7,8), ]
+clean_comb_HighSMe <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighSMe)
+clean_comb_HighSMe <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighSMe, replace=FALSE)
+rescSMD_HighSMe <- rma(yi = yi, vi = vi, data = clean_comb_HighSMe)
+rescSMD_HighSMe
+# Combined - OR - Education
+comb_HighSMore <- HighSM[-c(1,2,3,6,7,8), ]
+clean_comb_HighSMore <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighSMore)
+clean_comb_HighSMore <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighSMore, replace=FALSE)
+rescOR_HighSMe <- rma(yi = yi, vi = vi, data = clean_comb_HighSMore)
+rescOR_HighSMe
+
+# Combined - SMD - cross-sectional
+comb_HighSMcs <- HighSM[-c(1,2,6), ]
+clean_comb_HighSMcs <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighSMcs)
+clean_comb_HighSMcs <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighSMcs, replace=FALSE)
+rescSMD_HighSMcs <- rma(yi = yi, vi = vi, data = clean_comb_HighSMcs)
+rescSMD_HighSMcs
+# Combined - OR - cross-sectional
+comb_HighSMorcs <- HighSM[-c(1,2,6), ]
+clean_comb_HighSMorcs <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighSMorcs)
+clean_comb_HighSMorcs <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighSMorcs, replace=FALSE)
+rescOR_HighSMcs <- rma(yi = yi, vi = vi, data = clean_comb_HighSMorcs)
+rescOR_HighSMcs
+# Combined - 2x change - SMD - longitudinal
+comb_HighSMld <- HighSM[-c(3,4,5,7,8,9), ]
+clean_comb_HighSMld <- escalc(measure="SMD", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=comb_HighSMld)
+clean_comb_HighSMld <- escalc(measure="OR2DN", ai = epos, bi = eneg, ci = npos, di = nneg, data=clean_comb_HighSMld, replace=FALSE)
+rescSMD_HighSMld <- rma(yi = yi, vi = vi, data = clean_comb_HighSMld)
+rescSMD_HighSMld
+# Combined - 2x change - OR - longitudinal
+comb_HighSMorld <- HighSM[-c(3,4,5,7,8,9), ]
+clean_comb_HighSMorld <- escalc(measure="OR", ai = epos, bi = eneg, ci = npos, di = nneg, data=comb_HighSMorld)
+clean_comb_HighSMorld <- escalc(measure="D2ORN", m1i = Me, m2i = Mc, sd1i = Se, sd2i = Sc, n1i = Ne, n2i = Nc, data=clean_comb_HighSMorld, replace=FALSE)
+rescOR_HighSMld <- rma(yi = yi, vi = vi, data = clean_comb_HighSMorld)
+rescOR_HighSMld
+```
